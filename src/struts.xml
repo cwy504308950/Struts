@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+	<struts>
+		<constant name="struts.devMode" value="true"></constant>
+		<constant  name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+		<package name="myPackage" namespace="/" extends="struts-default">
+		
+		<!-- 配置拦截器 -->
+		<interceptors>
+			<!-- 注册拦截器 -->
+			<interceptor name="MyInterrupt" class="com.interrupt.MyIterrupt"></interceptor>
+				<!-- 配置拦截器栈 -->
+				<interceptor-stack name="myStack">
+					<interceptor-ref name="MyInterrupt">
+						<!-- 指定拦截器不拦截那些方法 -->
+						<param name="excludeMethods">loginn</param>
+					</interceptor-ref>
+					<!--  -->
+					<interceptor-ref name="defaultStack"></interceptor-ref>
+				</interceptor-stack>
+		</interceptors>
+		
+		<!-- 指定包中默认的拦截器栈 -->
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+		<!-- 配置全局结果集 -->
+		<global-results>
+			<result name="tologin">/login.jsp</result>
+		</global-results>
+		
+		<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="UserAction_*" class="com.web.UserAction" method="{1}">
+				<result name ="index" type="redirectAction">PasteAction</result>
+				<result name ="login">/login.jsp</result>
+			</action>
+			
+			<action name="PasteAction" class="com.web.PasteAction" method="paste">
+				<result name="paste">/index.jsp</result>
+			</action>
+			
+			<action name="addAction" class="com.web.AddAction" method="add">
+				<result name="indexxx" type="redirectAction" >PasteAction</result>
+				<result name="add">/add.jsp</result>
+			</action>
+		</package>
+		
+		<package name="mPackage" namespace="/" extends="struts-default">
+			<action name="registerAction" class="com.web.RegisterAction" method="register">
+				<result name="rtologin">/login.jsp</result>
+				<result name="toregister">/register.jsp</result>
+			</action>
+			
+
+		
+		
+		</package>
+	
+	
+	</struts>
